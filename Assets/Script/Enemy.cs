@@ -1,21 +1,42 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : BaseEntity
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        stats = new BaseStats(60, 1, 4, 1, 10);
+    }
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void TakeDamage(Player player)
-    {
 
+    public override void TakeDamage(BaseEntity damager, Elements element)
+    {
+        if (stats.Health <= 0)
+        {
+            Debug.Log("Dejalo, ya está muerto! :'c");
+            Die();
+            return;
+        }
+
+
+        stats.TakeDamage(stats.Power);
+    }
+    void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("Enemigo destruido");
     }
 }
+

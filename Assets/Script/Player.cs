@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : BaseEntity
 {
-    public BaseStats stats;
-
     public float range;
 
     public CircleCollider2D coll;
 
-    public List<GameObject> Enemys =new();
+    public List<GameObject> Enemys = new();
 
     private void Awake()
     {
@@ -23,8 +21,7 @@ public class Player : MonoBehaviour
     void Start()
     {
 
-
-        //InvokeRepeating("AutoAttackEnemies", 1f, 1f);
+        InvokeRepeating("AutoAttackEnemies", 1f, 1f);
     }
 
     void Update()
@@ -33,18 +30,17 @@ public class Player : MonoBehaviour
     }
     public void AutoAttackEnemies()
     {
-        /*print("ATAQUE!");
+        print("ATAQUE!");
 
-        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-        foreach (GameObject enemy in allEnemies)
+        foreach (GameObject enemy in Enemys)
         {
             float distance = Vector3.Distance(enemy.transform.position, transform.position);
 
-            if (distance <= range)
-                enemy.GetComponent<Enemy>().TakeDamage(this);
+            if (distance <= range && enemy.GetComponent<Enemy>() != null)
+                enemy.GetComponent<Enemy>().TakeDamage(this, Element);
         }
-        */
+        
     }
 
     private void OnDestroy()
@@ -55,6 +51,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.GetComponent<Enemy>() != null)
         Enemys.Add(collision.gameObject);
     }
 
@@ -62,5 +59,40 @@ public class Player : MonoBehaviour
     {
         Enemys.Remove(collision.gameObject);
     }
+
+    public override void TakeDamage(BaseEntity damager, Elements element)
+    {
+        if(CompareTag("Enemy"))
+        {
+            Debug.Log(damager.Element);
+
+            int damage = damager.Stats.Power;
+
+            switch (damager.Element)
+            {
+                case Elements.None:
+                    //damage = damage;
+                    break;
+                case Elements.Fire:
+                    damage *= 2;
+                    break;
+                case Elements.Water:
+                    damage /= 2;
+                    break;
+                case Elements.Earth:
+                    damage *= 3;
+                    break;
+                case Elements.Air:
+                    damage = 0;
+                    break;
+                default:
+                    break;
+            }
+
+            stats.TakeDamage(damage); 
+        }
+    }
+
+
 }
     

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BaseStats 
@@ -9,7 +10,6 @@ public class BaseStats
     private int knockback;
     private int xp;
 
-
     public BaseStats(int health , int power, int speed, int knockback , int xp)
     {
         SetHealth(health);
@@ -18,6 +18,7 @@ public class BaseStats
         SetKnockback(knockback);
         SetXP(xp);
     }
+
     public void SetPower(int power)
     {
         this.power = power;
@@ -41,6 +42,26 @@ public class BaseStats
     {
         this.xp = xp;
     }
+
+    public void TakeDamage(int value)
+    {
+        health -= value;
+        
+        if(health <= 0)
+        {
+            health = 0;
+        }
+    }
+    public void AddXP(int value)
+    {
+        xp += value;
+    }
+
+    public void AddHealth(int value)
+    {
+        health += value;
+    }
+
     public int Health => health;
     public int Power => power;
     public int Speed => speed;
