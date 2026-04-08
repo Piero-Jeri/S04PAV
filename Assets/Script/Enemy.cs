@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : BaseEntity
@@ -8,7 +9,8 @@ public class Enemy : BaseEntity
     }
     void Start()
     {
-
+        //Vector2.Distance(Playerpos, Enemypos);
+        
     }
 
     void Update()
@@ -26,8 +28,7 @@ public class Enemy : BaseEntity
             return;
         }
 
-
-        stats.TakeDamage(stats.Power);
+        stats.TakeDamage(damager.Stats.Power);
     }
     void Die()
     {
@@ -38,5 +39,20 @@ public class Enemy : BaseEntity
     {
         Debug.Log("Enemigo destruido");
     }
+
+    /*void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Player player = collision.gameObject.GetComponent<Player>();
+
+            if (player != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+
+            Destroy(gameObject);
+        }
+    }*/
 }
 
